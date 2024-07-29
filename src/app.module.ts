@@ -4,19 +4,19 @@ import { CategoriaModule } from './categorias/categorias.module';
 import { Categoria } from './categorias/entities/categorias.entity';
 
 @Module({
-  imports: [    
+  imports: [
     TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: '.753159Tata.',
-    database: 'db_minerva',
-    entities: [Categoria],
-    synchronize: true,
-    logging: true,
-}),
-CategoriaModule,
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'db_minerva',
+      entities: [Categoria],
+      synchronize: true,
+      logging: true,
+    }),
+    CategoriaModule,
   ],
   controllers: [],
   providers: [],
