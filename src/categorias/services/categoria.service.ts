@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Categoria } from '../entities/categorias.entity';
+import { Categoria } from '../entities/categoria.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, ILike, Repository } from 'typeorm';
 
@@ -11,13 +11,20 @@ export class CategoriaService {
   ) {}
 
   async findAll(): Promise<Categoria[]> {
-    return await this.categoriaRepository.find();
+    return await this.categoriaRepository.find({
+      relations: {
+        produto: true
+      }
+    });
   }
   async findById(id: number): Promise<Categoria> {
     let buscaCategoria = await this.categoriaRepository.findOne({
       where: {
         id,
       },
+      relations: {
+        produto: true
+      }
     });
 
     if (!buscaCategoria)
@@ -31,8 +38,11 @@ export class CategoriaService {
   async findByTipo(tipo: string): Promise<Categoria[]> {
     return await this.categoriaRepository.find({
       where: {
-        tipo: ILike(`%${tipo}%`),
+        tipo: ILike(`%${tipo}%`)
       },
+      relations: {
+        produto: true
+      }
     });
   }
 
