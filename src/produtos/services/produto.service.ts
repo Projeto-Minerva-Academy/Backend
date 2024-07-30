@@ -1,8 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { DeleteResult, ILike, Repository } from "typeorm";
-import { Produto } from "../entities/produto.entity";
-import { CategoriaService } from "../../categorias/services/categorias.service";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, ILike, Repository } from 'typeorm';
+import { Produto } from '../entities/produto.entity';
+import { CategoriaService } from '../../categorias/services/categoria.service';
 
 @Injectable()
 export class ProdutoService {
@@ -15,19 +15,22 @@ export class ProdutoService {
   async findAll(): Promise<Produto[]> {
     return await this.produtoRepository.find({
       relations: {
-        categoria: true
-      }
+        categoria: true,
+      },
     });
   }
 
   async findById(id: number): Promise<Produto> {
     let produto = await this.produtoRepository.findOne({
       where: { id },
-      relations: { categoria: true }
+      relations: { categoria: true },
     });
 
     if (!produto)
-      throw new HttpException('O Produto não foi encontrado!', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'O Produto não foi encontrado!',
+        HttpStatus.NOT_FOUND,
+      );
 
     return produto;
   }
@@ -35,7 +38,7 @@ export class ProdutoService {
   async findByTipo(nome: string): Promise<Produto[]> {
     return await this.produtoRepository.find({
       where: { nome: ILike(`%${nome}%`) },
-      relations: { categoria: true }
+      relations: { categoria: true },
     });
   }
 
