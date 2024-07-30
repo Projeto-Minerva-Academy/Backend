@@ -12,7 +12,7 @@ import { ProdutoModule } from './produtos/produto.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '.753159Tata.',
+      password: 'root',
       database: 'db_minerva',
       entities: [Categoria, Produto],
       synchronize: true,
