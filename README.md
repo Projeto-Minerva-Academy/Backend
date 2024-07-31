@@ -29,7 +29,9 @@ env: Utilizado na descrição de modificações ou adições em arquivos de conf
 ### Exemplos de Commits:
 
 chore: add commitlint e husky
+
 chore(eslint): obrigar o uso de aspas duplas no jsx
+
 refactor: refatorando a tipagem
 
 feat: add axios / buscando e tratando os dados
