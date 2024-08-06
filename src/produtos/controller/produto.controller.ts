@@ -36,10 +36,10 @@ export class ProdutoController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/tipo/:tipo')
+  @Get('/nome/:nome')
   @HttpCode(HttpStatus.OK) // Http Status 200
-  findByTipo(@Param('tipo') tipo: string): Promise<Produto[]> {
-    return this.produtoService.findByTipo(tipo);
+  findByTipo(@Param('nome') nome: string): Promise<Produto[]> {
+    return this.produtoService.findByNome(nome);
   }
 
   @UseGuards(JwtAuthGuard)

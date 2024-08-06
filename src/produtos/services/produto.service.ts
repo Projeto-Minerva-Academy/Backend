@@ -9,8 +9,8 @@ export class ProdutoService {
   constructor(
     @InjectRepository(Produto)
     private produtoRepository: Repository<Produto>,
-    private categoriaService: CategoriaService
-  ) { }
+    private categoriaService: CategoriaService,
+  ) {}
 
   async findAll(): Promise<Produto[]> {
     return await this.produtoRepository.find({
@@ -35,7 +35,7 @@ export class ProdutoService {
     return produto;
   }
 
-  async findByTipo(nome: string): Promise<Produto[]> {
+  async findByNome(nome: string): Promise<Produto[]> {
     return await this.produtoRepository.find({
       where: { nome: ILike(`%${nome}%`) },
       relations: { categoria: true },
@@ -43,50 +43,58 @@ export class ProdutoService {
   }
 
   async create(produto: Produto): Promise<Produto> {
-
     if (produto.categoria) {
-
-      let categoria = await this.categoriaService.findById(produto.categoria.id)
+      let categoria = await this.categoriaService.findById(
+        produto.categoria.id,
+      );
 
       if (!categoria)
+        throw new HttpException(
+          'Categoria não encontrada',
+          HttpStatus.NOT_FOUND,
+        );
 
-        throw new HttpException('Categoria não encontrada', HttpStatus.NOT_FOUND);
-
-      return await this.produtoRepository.save(produto)
+      return await this.produtoRepository.save(produto);
     }
 
-    return await this.produtoRepository.save(produto)
-
+    return await this.produtoRepository.save(produto);
   }
 
-  async update(produto: Produto): Promise < Produto > {
-  let buscaProduto: Produto = await this.findById(produto.id);
+  async update(produto: Produto): Promise<Produto> {
+    let buscaProduto: Produto = await this.findById(produto.id);
 
-  if(!buscaProduto || !produto.id)
-throw new HttpException('O Produto não foi encontrado!', HttpStatus.NOT_FOUND);
+    if (!buscaProduto || !produto.id)
+      throw new HttpException(
+        'O Produto não foi encontrado!',
+        HttpStatus.NOT_FOUND,
+      );
 
-if (produto.categoria) {
+    if (produto.categoria) {
+      let categoria = await this.categoriaService.findById(
+        produto.categoria.id,
+      );
 
-  let categoria = await this.categoriaService.findById(produto.categoria.id);
+      if (!categoria)
+        throw new HttpException(
+          'Categoria não encontrada',
+          HttpStatus.NOT_FOUND,
+        );
 
-  if(!categoria)
+      return await this.produtoRepository.save(produto);
+    }
 
-    throw new HttpException("Categoria não encontrada", HttpStatus.NOT_FOUND)
-
-    return await this.produtoRepository.save(produto)
-}
-
-return await this.produtoRepository.save(produto);
-
+    return await this.produtoRepository.save(produto);
   }
 
-  async delete (id: number): Promise < DeleteResult > {
-    
-  let buscaProduto = await this.findById(id);
+  async delete(id: number): Promise<DeleteResult> {
+    let buscaProduto = await this.findById(id);
 
-  if(!buscaProduto)
-      throw new HttpException('O Produto não foi encontrado!', HttpStatus.NOT_FOUND);
+    if (!buscaProduto)
+      throw new HttpException(
+        'O Produto não foi encontrado!',
+        HttpStatus.NOT_FOUND,
+      );
 
-  return await this.produtoRepository.delete(id);
-}
+    return await this.produtoRepository.delete(id);
+  }
 }
